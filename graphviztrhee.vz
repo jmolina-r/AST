@@ -1,0 +1,15 @@
+digraph G {
+	 6[label= int]
+	5[label= "specifier01"]
+	5 -> 6
+	7[label= xaa]
+	4[label= var_declaration01]
+	4 -> 5
+	4 -> 7
+	3[label= declaration01]
+	3 -> 4
+	2[label= declaration_list02]
+	2 -> 3
+	1[label= program]
+	1->2
+	}

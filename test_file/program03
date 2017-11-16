@@ -1,0 +1,5 @@
+!primera funcion
+funcion {var}
+    var = var + 23
+    return x
+

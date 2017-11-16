@@ -1,0 +1,12 @@
+</
+taller compiladores
+2017
+/>
+
+tokens(
+  int,
+  else,
+  id
+)
+
+lex()

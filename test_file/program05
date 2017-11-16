@@ -1,0 +1,4 @@
+void procedimiento ()
+    !imprimir hola mundo
+    msj = hola mundo
+    print [msj]

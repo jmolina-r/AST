@@ -1,0 +1,6 @@
+?primero programa
+If x > 0
+    x_89_7 = 4
+    y = 09
+elsE
+    x_89_7 = y

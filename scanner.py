@@ -122,7 +122,7 @@ def buscarFicheros(directorio):
     return files[int(numArchivo) - 1]
 
 
-directorio = 'C:/Users/jmoli/PycharmProjects/taller-compiladores/file/'
+directorio = 'C:/Users/jmoli/PycharmProjects/Taller_compiladores/test_file/'
 archivo = buscarFicheros(directorio)
 test = directorio + archivo
 fp = codecs.open(test, "r", "utf-8")

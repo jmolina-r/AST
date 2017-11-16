@@ -95,7 +95,6 @@ class declaration02(nodo):
         global txt
         id = incremetarContador()
         hijo1 = self.hijo1.traducir()
-
         hijo2 = self.hijo2.traducir()
         hijo3 = self.hijo3.traducir()
 
@@ -107,6 +106,46 @@ class declaration02(nodo):
 
 class var_declaration01(nodo):
     'var-declaration : type-specifier ID SEMICOLON'
+    def __init__(self,hijo1,hijo2,name):
+        self.name = name
+        self.hijo1 = hijo1
+        self.hijo2 = hijo2
+
+    def traducir(self):
+        global txt
+        id = incremetarContador()
+        hijo1 = self.hijo1.traducir()
+        hijo2 = self.hijo2.traducir()
+
+        txt += id + "[label= " + self.name + "]" + "\n\t"
+        txt += id + " -> " + hijo1+ "\n\t"
+        txt += id + " -> " + hijo2 + "\n\t"
+
+        return id
+
+class var_declaration02(nodo):
+    'var-declaration : type-specifier ID LSQUAREBRACKET NUM RSQUAREBRACKET SEMICOLON'
+    def __init__(self, hijo1, hijo2, hijo3,name):
+        self.name = name
+        self.hijo1 = hijo1
+        self.hijo2 = hijo2
+        self.hijo3 = hijo3
+
+    def traducir(self):
+        global txt
+        id = incremetarContador()
+
+        hijo1 = self.hijo1.traducir()
+        hijo2 = self.hijo2.traducir()
+        hijo3 = self.hijo3.traducir()
+
+        txt += id + "[label= " + self.name + "]" + "\n\t"
+        txt += id + " -> " + hijo1 + "\n\t"
+        txt += id + " -> " + hijo2 + "\n\t"
+        txt += id + " -> " + hijo3 + "\n\t"
+
+class type_specifier01(nodo):
+    'type-specifier : INT'
     def __init__(self, hijo1, name):
         self.name = name
         self.hijo1 = hijo1
@@ -114,20 +153,25 @@ class var_declaration01(nodo):
     def traducir(self):
         global txt
         id = incremetarContador()
+
         hijo1 = self.hijo1.traducir()
+
+        txt += id + "[label= \"" + self.name + "\"]" + "\n\t"
+        txt += id + " -> " + hijo1 + "\n\t"
 
         return id
 
-class var_declaration02(nodo):
-    'var-declaration : type-specifier ID LSQUAREBRACKET NUM RSQUAREBRACKET SEMICOLON'
-    def __init__(self, hijo1, hijo2, hijo3,hijo4, hijo5, hijo6, name):
+class type_specifier02(nodo):
+    'type-specifier : VOID'
+
+class fun_declaration(nodo):
+    'fun-declaration : type-specifier ID LPAREN params RPAREN compound-stmt'
+    def __init__(self,hijo1,hijo2,hijo3,hijo4,name):
         self.name = name
         self.hijo1 = hijo1
         self.hijo2 = hijo2
         self.hijo3 = hijo3
         self.hijo4 = hijo4
-        self.hijo5 = hijo5
-        self.hijo6 = hijo6
 
     def traducir(self):
         global txt
@@ -137,39 +181,30 @@ class var_declaration02(nodo):
         hijo2 = self.hijo2.traducir()
         hijo3 = self.hijo3.traducir()
         hijo4 = self.hijo4.traducir()
-        hijo5 = self.hijo5.traducir()
-        hijo6  = self.hijo6.traducir()
 
-        txt += id + "[label= " + self.name + "]" + "\n\t"
+        txt += id + "[label= \"" + self.name + "\"]" + "\n\t"
+
         txt += id + " -> " + hijo1 + "\n\t"
         txt += id + " -> " + hijo2 + "\n\t"
         txt += id + " -> " + hijo3 + "\n\t"
         txt += id + " -> " + hijo4 + "\n\t"
-        txt += id + " -> " + hijo5 + "\n\t"
-        txt += id + " -> " + hijo6 + "\n\t"
-
-class type_specifier01(nodo):
-    'type-specifier : INT'
-    def __init__(self, name):
-        self.name = name
-
-    def traducir(self):
-        global txt
-        id = incremetarContador()
-        txt += id + "[label= \"" + self.name + "\"]" + "\n\t"
 
         return id
-class type_specifier02(nodo):
-    'type-specifier : VOID'
-
-
-class fun_declaration(nodo):
-    'fun-declaration : type-specifier ID LPAREN params RPAREN compound-stmt'
-
 
 class params01(nodo):
     'params : param-list'
+    def __init__(self,hijo1,name):
+        self.name = name
+        self.hijo1 = hijo1
+    def traducir(self):
+        global txt
+        id = incremetarContador()
+        hijo1 = self.hijo1.traducir()
 
+        txt += id + "[label= " + self.name + "]" + "\n\t"
+        txt += id + " -> " + hijo1 + "\n\t"
+
+        return id
 
 class params02(nodo):
     'params : VOID'
@@ -177,11 +212,38 @@ class params02(nodo):
 
 class param_list01(nodo):
     'param-list : param-list COMMA param'
+    def __init__(self, hijo1,hijo2, name):
+        self.name = name
+        self.hijo1 = hijo1
+        self.hijo2 = hijo2
+    def traducir(self):
+        global txt
+        id = incremetarContador()
+        hijo1 = self.hijo1.traducir()
+        hijo2 = self.hijo2.traducir()
 
+        txt += id + "[label= " + self.name + "]" + "\n\t"
+        txt += id + " -> " + hijo1+ "\n\t"
+        txt += id + " -> " + hijo2 + "\n\t"
+
+        return id
 
 class param_list02(nodo):
     'param-list :  param'
+    def __init__(self, hijo1, name):
+        self.name = name
+        self.hijo1 = hijo1
 
+    def traducir(self):
+        global txt
+        id = incremetarContador()
+
+        hijo1 = self.hijo1.traducir()
+
+        txt += id + "[label= \"" + self.name + "\"]" + "\n\t"
+        txt += id + " -> " + hijo1 + "\n\t"
+
+        return id
 
 class param01(nodo):
     'param : type-specifier ID'
@@ -373,3 +435,24 @@ class arg_list01(nodo):
 
 class arg_list02(nodo):
     'arg-list : expression'
+
+class num(nodo):
+    def __init__(self, name):
+        self.name = name
+
+    def traducir(self):
+        global txt
+        id = incremetarContador()
+        txt += id + "[label= " + str(self.name) + "]" + "\n\t"
+
+        return id
+class ID(nodo):
+    def __init__(self, name):
+        self.name = name
+
+    def traducir(self):
+        global txt
+        id = incremetarContador()
+        txt += id + "[label= " + str(self.name) + "]" + "\n\t"
+
+        return id

@@ -36,23 +36,27 @@ def p_declaration_list02(p):
 
 def p_declaration01(p):
     'declaration : var-declaration'
-    p[0]= var_declaration01(p[1])
+    p[0] = declaration01(p[1],"declaration01")
+
 
 def p_declaration02(p):
     'declaration : fun-declaration'
-    p[0] = var_declaration02(p[1])
+    p[0] = declaration02(p[1],"declaration02")
 
 
 def p_var_declaration01(p):
     'var-declaration : type-specifier ID SEMICOLON'
-    p
+    p[0] = var_declaration01(p[1], ID(p[2]), "var_declaration01")
+
 
 def p_var_declaration02(p):
     'var-declaration : type-specifier ID LSQUAREBRACKET NUM RSQUAREBRACKET SEMICOLON'
+    p[0] = var_declaration01(p[1], p[2], p[4], "var_declaration02")
 
 
 def p_type_specifier01(p):
     'type-specifier : INT'
+    p[0] = type_specifier01(num(p[1]), "specifier01")
 
 
 def p_type_specifier02(p):
@@ -61,10 +65,12 @@ def p_type_specifier02(p):
 
 def p_fun_declaration(p):
     'fun-declaration : type-specifier ID LPAREN params RPAREN compound-stmt'
+    p[0] = fun_declaration(p[1], ID(p[2]), p[4], p[6], "fun_declaration")
 
 
 def p_params01(p):
     'params : param-list'
+    p[0] = param01(p[1], "params01")
 
 
 def p_params02(p):
@@ -292,4 +298,4 @@ parser = yacc.yacc()
 
 result = parser.parse(cadena)  # Use raw_input on Python 2
 
-#traducir(result)
+traducir(result)

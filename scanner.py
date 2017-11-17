@@ -86,7 +86,7 @@ list_error = []
 
 
 def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
+    print("Caracter Ilegal, '%s'" % t.value[0])
     list_error.append(str(t.value[0]))  # agrega el valor del error a una lista
     t.lexer.skip(1)
 

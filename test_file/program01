@@ -1,3 +1,8 @@
-int xaa;
+int x;
+int w;
+int dss[34];
+void metodo(int x, int w){
+    int Z;
+}
 
 

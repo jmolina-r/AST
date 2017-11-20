@@ -1,5 +1,3 @@
-IF x > 01
-    x_89_7 = 04
-    y = 09
-elsE
-    x_89_7 = y
+void prueba (int x){
+    if(df);
+}

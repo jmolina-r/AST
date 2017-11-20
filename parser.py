@@ -50,18 +50,18 @@ def p_var_declaration01(p):
 
 
 def p_var_declaration02(p):
-    'var-declaration : type-specifier ID LSQUAREBRACKET RSQUAREBRACKET'
-    p[0] = var_declaration01(p[1], p[2], p[4], "var_declaration02")
+    'var-declaration : type-specifier ID LSQUAREBRACKET NUM RSQUAREBRACKET SEMICOLON'
+    p[0] = var_declaration02(p[1], ID(p[2]),num(p[4]), "var_declaration02")
 
 
 def p_type_specifier01(p):
     'type-specifier : INT'
-    p[0] = type_specifier01(num(p[1]), "specifier01")
+    p[0] = type_specifier01(INT(p[1]), "specifier01")
 
 
 def p_type_specifier02(p):
     'type-specifier : VOID'
-
+    p[0] = type_specifier02(VOID(p[1]), "specifier01")
 
 def p_fun_declaration(p):
     'fun-declaration : type-specifier ID LPAREN params RPAREN compound-stmt'
@@ -75,7 +75,7 @@ def p_params01(p):
 
 def p_params02(p):
     'params : VOID'
-
+    p[0]=VOID(p[1])
 
 def p_param_list01(p):
     'param-list : param-list COMMA param'
@@ -145,11 +145,11 @@ def p_expression_stmt02(p):
 
 def p_selection_stmt01(p):
     'selection-stmt : IF LPAREN expression RPAREN statement'
-    p[0] = selection_stmt01(p[3], p[5], "selection_stmt01")
+    p[0] = selection_stmt01(IF(p[1]),p[3], p[5], "selection_stmt01")
 
 def p_selection_stmt02(p):
     'selection-stmt : IF LPAREN expression RPAREN statement ELSE statement'
-    p[0] = selection_stmt02(p[3], p[5],p[7],"selection_stmt02")
+    p[0] = selection_stmt02(IF(p[1]),p[3], p[5],p[7],"selection_stmt02")
 
 def p_iteration_stmt(p):
     'iteration-stmt : WHILE LPAREN expression RPAREN statement'
@@ -239,11 +239,11 @@ def p_term02(p):
 
 def p_mulop01(p):
     'mulop : TIMES'
-    p[0] = mulop01(p[1], "mulop01")
+    p[0] = mulop01(TIMES(p[1]), "mulop01")
 
 def p_mulop02(p):
     'mulop : DIVIDE'
-    p[0] = mulop02(p[1], "mulop02")
+    p[0] = mulop02(DIVIDE(p[1]), "mulop02")
 
 
 def p_factor01(p):
@@ -284,7 +284,7 @@ def p_arg_list02(p):
 
 def p_empty(p):
     'empty :'
-    # pass
+    pass
 
 
 def p_error(p):
@@ -301,5 +301,6 @@ def traducir(result):
 parser = yacc.yacc()
 
 result = parser.parse(cadena)  # Use raw_input on Python 2
+
 
 traducir(result)

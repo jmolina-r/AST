@@ -1,3 +1,11 @@
-void prueba (int x){
-    if(df);
+int aNumber1;
+int aNumber2;
+int anArray{123};
+void aVariable;
+void anotherArray{234};
+
+int aProcedure4 ( int aNum1, void aNum2 ){
+
+        ;;;;
+
 }

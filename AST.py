@@ -33,257 +33,80 @@ class program(nodo):
         global txt
         id = incremetarContador()
 
-        hijo1 = self.hijo1.traducir()
+        if isinstance(self.hijo1, list):
+            for hijo in self.hijo1:
+                hijo1 = hijo.traducir()
+                print type(hijo)
+                txt += str(id) +" -> " + str(hijo1) + "\n\t"
+        else:
+            print "hola"
+            hijo1=self.hijo1.traducir()
+            txt += id + "->" + hijo1 + "\n\t"
 
         txt += id + "[label= " + self.name + "]" + "\n\t"
-        txt += id + "->" + hijo1 + "\n\t"
+        #txt += id + "->" + hijo1 + "\n\t"
 
         return "digraph G {\n\t" + txt + "}"
-
-
-class declaration_list01(nodo):
-    def __init__(self, hijo1, hijo2, name):
-        self.name = name
-        self.hijo1 = hijo1
-        self.hijo2 = hijo2
-
-    def traducir(self):
-        global txt
-        id = incremetarContador()
-        hijo1 = self.hijo1.traducir()
-        hijo2 = self.hijo2.traducir()
-
-        txt += id + "[label= " + self.name + "]" + "\n\t"
-        txt += id + " -> " + hijo1 + "\n\t"
-        txt += id + " -> " + hijo2 + "\n\t"
-
-        return id
-
-
-class declaration_list02(nodo):
-    def __init__(self, hijo1, name):
-        self.name = name
-        self.hijo1 = hijo1
-
-    def traducir(self):
-        global txt
-        id = incremetarContador()
-        hijo1 = self.hijo1.traducir()
-
-        txt += id + "[label= " + self.name + "]" + "\n\t"
-        txt += id + " -> " + hijo1 + "\n\t"
-
-        return id
-
-
-class declaration01(nodo):
-    'declaration : var-declaration'
-
-    def __init__(self, hijo1, name):
-        self.name = name
-        self.hijo1 = hijo1
-
-    def traducir(self):
-        global txt
-        id = incremetarContador()
-
-        hijo1 = self.hijo1.traducir()
-
-        txt += id + "[label= " + self.name + "]" + "\n\t"
-        txt += id + " -> " + hijo1 + "\n\t"
-
-        return id
-
-
-class declaration02(nodo):
-    'declaration : fun-declaration'
-
-    def __init__(self, hijo1, name):
-        self.name = name
-        self.hijo1 = hijo1
-
-    def traducir(self):
-        global txt
-        id = incremetarContador()
-        hijo1 = self.hijo1.traducir()
-
-        txt += id + "[label= " + self.name + "]" + "\n\t"
-        txt += id + " -> " + hijo1 + "\n\t"
-
-        return id
 
 
 class var_declaration01(nodo):
     'var-declaration : type-specifier ID SEMICOLON'
 
-    def __init__(self, hijo1, hijo2, name):
+    def __init__(self, type_var, ID, NUM, name):
         self.name = name
-        self.hijo1 = hijo1
-        self.hijo2 = hijo2
+        self.type_var = type_var
+        self.ID = ID
+        self.NUM =NUM
 
     def traducir(self):
         global txt
         id = incremetarContador()
-        hijo1 = self.hijo1.traducir()
-        hijo2 = self.hijo2.traducir()
+        #hijo1 = self.type2.traducir()
+        #hijo2 = self.hijo2.traducir()
 
-        txt += id + "[label= " + self.name + "]" + "\n\t"
-        txt += id + " -> " + hijo1 + "\n\t"
-        txt += id + " -> " + hijo2 + "\n\t"
-
-        return id
-
-
-class var_declaration02(nodo):
-    'var-declaration : type-specifier ID LSQUAREBRACKET NUM RSQUAREBRACKET SEMICOLON'
-
-    def __init__(self, hijo1, hijo2, hijo3, name):
-        self.name = name
-        self.hijo1 = hijo1
-        self.hijo2 = hijo2
-        self.hijo3 = hijo3
-
-    def traducir(self):
-        global txt
-        id = incremetarContador()
-
-        hijo1 = self.hijo1.traducir()
-        hijo2 = self.hijo2.traducir()
-        hijo3 = self.hijo3.traducir()
-
-        txt += id + "[label= " + self.name + "]" + "\n\t"
-        txt += id + " -> " + hijo1 + "\n\t"
-        txt += id + " -> " + hijo2 + "\n\t"
-        txt += id + " -> " + hijo3 + "\n\t"
+        if self.NUM is not None:
+            txt += id + "[label= \" "+ self.name + " " + self.type_var +" "+ self.ID +" ["+str(self.NUM) +"]\" ]" + "\n\t"
+        else:
+            txt += id + "[label= \" "+ self.name + " " + self.type_var + " " + self.ID +  "\" ]" + "\n\t"
+        #txt += id + " -> " + hijo1 + "\n\t"
+        #txt += id + " -> " + hijo2 + "\n\t"
 
         return id
 
-
-class type_specifier01(nodo):
-    'type-specifier : INT'
-
-    def __init__(self, hijo1, name):
-        self.name = name
-        self.hijo1 = hijo1
-
-    def traducir(self):
-        global txt
-        id = incremetarContador()
-
-        hijo1 = self.hijo1.traducir()
-
-        txt += id + "[label= \"" + self.name + "\"]" + "\n\t"
-        txt += id + " -> " + hijo1 + "\n\t"
-
-        return id
-
-
-class type_specifier02(nodo):
-    'type-specifier : VOID'
-
-    def __init__(self, hijo1, name):
-        self.name = name
-        self.hijo1 = hijo1
-
-    def traducir(self):
-        global txt
-        id = incremetarContador()
-
-        hijo1 = self.hijo1.traducir()
-
-        txt += id + "[label= \"" + self.name + "\"]" + "\n\t"
-        txt += id + " -> " + hijo1 + "\n\t"
-
-        return id
 
 
 class fun_declaration(nodo):
     'fun-declaration : type-specifier ID LPAREN params RPAREN compound-stmt'
 
-    def __init__(self, hijo1, hijo2, hijo3, hijo4, name):
+    def __init__(self, type_var, ID, params, compound_stmt,name):
         self.name = name
-        self.hijo1 = hijo1
-        self.hijo2 = hijo2
-        self.hijo3 = hijo3
-        self.hijo4 = hijo4
+        self.type_var = type_var
+        self.ID = ID
+        self.compound_stmt = compound_stmt
+        self.params = params
 
     def traducir(self):
         global txt
         id = incremetarContador()
 
-        hijo1 = self.hijo1.traducir()
-        hijo2 = self.hijo2.traducir()
-        hijo3 = self.hijo3.traducir()
-        hijo4 = self.hijo4.traducir()
+        compound_stmt = self.compound_stmt.traducir()
 
-        txt += id + "[label= \"" + self.name + "\"]" + "\n\t"
+        if isinstance(self.params, list):
+            for param in self.params:
+                print "lista"
+                idp = param.traducir()
+                txt += id + "[label= \"" + self.name + " " + self.type_var + " " + self.ID + "\"]" + "\n\t"
+                txt += str(id) +" -> " + str(idp) + "\n\t"
+        else:
+            print "no lista"
+            if self.params == "void":
+                txt += id + "[label= \"" + self.name + " " + self.type_var + " " + self.ID + "\"]" + "\n\t"
+            else:
+                idp=self.params.traducir()
+                txt += id + "[label= \"" + self.name + " " + self.type_var + " " + self.ID + "\"]" + "\n\t"
+                txt += id + "->" + str(idp) + "\n\t"
 
-        txt += id + " -> " + hijo1 + "\n\t"
-        txt += id + " -> " + hijo2 + "\n\t"
-        txt += id + " -> " + hijo3 + "\n\t"
-        txt += id + " -> " + hijo4 + "\n\t"
-
-        return id
-
-
-class params01(nodo):
-    'params : param-list'
-
-    def __init__(self, hijo1, name):
-        self.name = name
-        self.hijo1 = hijo1
-
-    def traducir(self):
-        global txt
-        id = incremetarContador()
-        hijo1 = self.hijo1.traducir()
-
-        txt += id + "[label= " + self.name + "]" + "\n\t"
-        txt += id + " -> " + hijo1 + "\n\t"
-
-        return id
-
-
-class params02(nodo):
-    'params : VOID'
-
-
-class param_list01(nodo):
-    'param-list : param-list COMMA param'
-
-    def __init__(self, hijo1, hijo2, name):
-        self.name = name
-        self.hijo1 = hijo1
-        self.hijo2 = hijo2
-
-    def traducir(self):
-        global txt
-        id = incremetarContador()
-        hijo1 = self.hijo1.traducir()
-        hijo2 = self.hijo2.traducir()
-
-        txt += id + "[label= " + self.name + "]" + "\n\t"
-        txt += id + " -> " + hijo1 + "\n\t"
-        txt += id + " -> " + hijo2 + "\n\t"
-
-        return id
-
-
-class param_list02(nodo):
-    'param-list :  param'
-
-    def __init__(self, hijo1, name):
-        self.name = name
-        self.hijo1 = hijo1
-
-    def traducir(self):
-        global txt
-        id = incremetarContador()
-
-        hijo1 = self.hijo1.traducir()
-
-        txt += id + "[label= \"" + self.name + "\"]" + "\n\t"
-        txt += id + " -> " + hijo1 + "\n\t"
+        txt += id + " -> " + compound_stmt + "\n\t"
 
         return id
 
@@ -291,62 +114,57 @@ class param_list02(nodo):
 class param01(nodo):
     'param : type-specifier ID'
 
-    def __init__(self, hijo1, hijo2, name):
+    def __init__(self, var_type,ID,array, name):
         self.name = name
-        self.hijo1 = hijo1
-        self.hijo2 = hijo2
+        self.var_type= var_type
+        self.ID =ID
+        self.array = array
 
     def traducir(self):
         global txt
         id = incremetarContador()
-        hijo1 = self.hijo1.traducir()
-        hijo2 = self.hijo2.traducir()
-
-        txt += id + "[label= " + self.name + "]" + "\n\t"
-        txt += id + " -> " + hijo1 + "\n\t"
-        txt += id + " -> " + hijo2 + "\n\t"
+        if self.array == False:
+            txt += id + "[label= \" " + self.name +" "+self.var_type+" "+self.ID+"\"]" + "\n\t"
+        else:
+            txt += id + "[label= \" " + self.name +" "+ self.var_type+" "+ self.ID +"["+"]\"]" + "\n\t"
 
         return id
 
 
-class param02(nodo):
-    'param : type-specifier ID LSQUAREBRACKET  RSQUAREBRACKET'
-
-    def __init__(self, hijo1, hijo2, name):
-        self.name = name
-        self.hijo1 = hijo1
-        self.hijo2 = hijo2
-
-    def traducir(self):
-        global txt
-        id = incremetarContador()
-        hijo1 = self.hijo1.traducir()
-        hijo2 = self.hijo2.traducir()
-
-        txt += id + "[label= " + self.name + "]" + "\n\t"
-        txt += id + " -> " + hijo1 + "\n\t"
-        txt += id + " -> " + hijo2 + "\n\t"
-
-        return id
 
 
 class compound_stmt(nodo):
     'compound-stmt : LBRACE local-declarations statement-list RBRACE'
 
-    def __init__(self, hijo1, hijo2, name):
+    def __init__(self, local_declar,statement_list,name):
         self.name = name
-        self.hijo1 = hijo1
-        self.hijo2 = hijo2
+        self.local_declar = local_declar
+        self.statement_list = statement_list
 
     def traducir(self):
         global txt
         id = incremetarContador()
-        hijo1 = self.hijo1.traducir()
-        hijo2 = self.hijo2.traducir()
+
+        if isinstance(self.local_declar, list):
+            for hijo in self.local_declar:
+                hijo1 = hijo.traducir()
+                txt += str(id) +" -> " + str(hijo1) + "\n\t"
+        else:
+            hijo1=self.local_declar.traducir()
+            txt += id + "->" + hijo1 + "\n\t"
+
+        if isinstance(self.statement_list, list):
+            print self.statement_list
+            for hijo in self.statement_list:
+                hijo1 = hijo.traducir()
+                txt += str(id) +" -> " + str(hijo1) + "\n\t"
+        else:
+            print "stament"
+            hijo2=self.statement_list.traducir()
+            txt += id + "->" + hijo2 + "\n\t"
 
         txt += id + "[label= " + self.name + "]" + "\n\t"
-        txt += id + " -> " + hijo1 + "\n\t"
-        txt += id + " -> " + hijo2 + "\n\t"
+
         return id
 
 
@@ -385,12 +203,19 @@ class statement_list01(nodo):
     def traducir(self):
         global txt
         id = incremetarContador()
-        hijo1 = self.hijo1.traducir()
-        hijo2 = self.hijo2.traducir()
+        if self.hijo2 ==";":
+            hijo1 = self.hijo1.traducir()
+            #hijo2 = self.hijo2.traducir()
+            txt += id + "[label= " + self.name + "]" + "\n\t"
+            txt += id + " -> " + hijo1 + "\n\t"
+            #txt += id + " -> " + hijo2 + "\n\t"
+        else:
+            hijo1 = self.hijo1.traducir()
+            hijo2 = self.hijo2.traducir()
 
-        txt += id + "[label= " + self.name + "]" + "\n\t"
-        txt += id + " -> " + hijo1 + "\n\t"
-        txt += id + " -> " + hijo2 + "\n\t"
+            txt += id + "[label= " + self.name + "]" + "\n\t"
+            txt += id + " -> " + hijo1 + "\n\t"
+            txt += id + " -> " + hijo2 + "\n\t"
         return id
 
 
@@ -527,22 +352,29 @@ class expression_stmt02(nodo):
 class selection_stmt01(nodo):
     'selection-stmt : IF LPAREN expression RPAREN statement'
 
-    def __init__(self, hijo1, hijo2,hijo3, name):
+    def __init__(self, expresion, statement, name):
         self.name = name
-        self.hijo1 = hijo1
-        self.hijo2 = hijo2
-        self.hijo3 = hijo3
+        self.expresion = expresion
+        self.statement = statement
+
 
     def traducir(self):
         global txt
         id = incremetarContador()
-        hijo1 = self.hijo1.traducir()
-        hijo2 = self.hijo2.traducir()
-        hijo3 = self.hijo3.traducir()
+
         txt += id + "[label= " + self.name + "]" + "\n\t"
-        txt += id + " -> " + hijo1 + "\n\t"
-        txt += id + " -> " + hijo2 + "\n\t"
-        txt += id + " -> " + hijo3 + "\n\t"
+        if isinstance(self.statement,list):
+            print 'lista stamentr'
+        else:
+            print "not list1"
+        if isinstance(self.expresion,list):
+            print 'lista expresion'
+        else:
+            expresion = self.expresion.traducir()
+            txt += id + " -> " + expresion + "\n\t"
+            print "not list2"
+
+
         return id
 
 
@@ -615,24 +447,22 @@ class return_stmt02(nodo):
 class expression01(nodo):
     'expression : var ASSIGN expression'
 
-    def __init__(self, hijo1, hijo2, hijo3, name):
+    def __init__(self, var, expression, name):
         self.name = name
-        self.hijo1 = hijo1
-        self.hijo2 = hijo2
-        self.hijo3 = hijo3
+        self.var = var
+        self.expression = expression
 
     def traducir(self):
         global txt
         id = incremetarContador()
 
-        hijo1 = self.hijo1.traducir()
-        hijo2 = self.hijo2.traducir()
-        hijo3 = self.hijo3.traducir()
+        var = self.var.traducir()
+        expression = self.expression.traducir()
 
-        txt += id + "[label= " + self.name + "]" + "\n\t"
-        txt += id + " -> " + hijo1 + "\n\t"
-        txt += id + " -> " + hijo2 + "\n\t"
-        txt += id + " -> " + hijo3 + "\n\t"
+        txt += id + "[label= \" " + self.name +"\" ]" + "\n\t"
+        txt += id + " -> " + var + "\n\t"
+        txt += id + " -> " + expression + "\n\t"
+
         return id
 
 
@@ -657,16 +487,16 @@ class expression02(nodo):
 class var01(nodo):
     'var : ID'
 
-    def __init__(self, hijo1, name):
+    def __init__(self, var, name):
         self.name = name
-        self.hijo1 = hijo1
+        self.var = var
 
     def traducir(self):
         global txt
         id = incremetarContador()
-        hijo1 = self.hijo1.traducir()
+        hijo1 = self.var.traducir()
 
-        txt += id + "[label= " + self.name + "]" + "\n\t"
+        txt += id + "[label= " + self.name +str(var)+ "]" + "\n\t"
         txt += id + " -> " + hijo1 + "\n\t"
 
         return id

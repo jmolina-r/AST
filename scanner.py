@@ -94,6 +94,7 @@ def t_error(t):
 def t_NUM(t):
     r'(0[0-9])|[1-9][0-9]+'
     t.value = int(t.value)
+    t.type = 'NUM'
     return t
 
 

@@ -1,7 +1,4 @@
-int x;
-int w;
-void metodo(int x, int w){
-    int Z;
-}
+if (aNum5)
+        ;
 
 

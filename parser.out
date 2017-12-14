@@ -2,7 +2,9 @@ Created by PLY version 3.10 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
+    LSQUAREBRACKET
     LINECOMMENT
+    RSQUAREBRACKET
     MULTCOMMMENT
 
 Grammar
@@ -23,7 +25,7 @@ Rule 12    params -> VOID
 Rule 13    param-list -> param-list COMMA param
 Rule 14    param-list -> param
 Rule 15    param -> type-specifier ID
-Rule 16    param -> type-specifier ID LSQUAREBRACKET RSQUAREBRACKET
+Rule 16    param -> type-specifier ID LBRACE RBRACE
 Rule 17    compound-stmt -> LBRACE local-declarations statement-list RBRACE
 Rule 18    local-declarations -> local-declarations var-declaration
 Rule 19    local-declarations -> empty
@@ -83,21 +85,21 @@ GREATER              : 42
 ID                   : 6 7 10 15 16 36 37 58
 IF                   : 29 30
 INT                  : 8
-LBRACE               : 7 17 37
+LBRACE               : 7 16 17 37
 LESS                 : 41
 LINECOMMENT          : 
 LPAREN               : 10 29 30 31 54 58
-LSQUAREBRACKET       : 16
+LSQUAREBRACKET       : 
 MINUS                : 49
 MUCHGREATER          : 43
 MUCHSMALLER          : 40
 MULTCOMMMENT         : 
 NUM                  : 7 57
 PLUS                 : 48
-RBRACE               : 7 17 37
+RBRACE               : 7 16 17 37
 RETURN               : 32 33
 RPAREN               : 10 29 30 31 54 58
-RSQUAREBRACKET       : 16
+RSQUAREBRACKET       : 
 SEMICOLON            : 6 7 27 28 32 33
 TIMES                : 52
 UNEQUAL              : 45
@@ -294,7 +296,7 @@ state 13
     (13) param-list -> . param-list COMMA param
     (14) param-list -> . param
     (15) param -> . type-specifier ID
-    (16) param -> . type-specifier ID LSQUAREBRACKET RSQUAREBRACKET
+    (16) param -> . type-specifier ID LBRACE RBRACE
     (8) type-specifier -> . INT
     (9) type-specifier -> . VOID
 
@@ -340,7 +342,7 @@ state 17
 state 18
 
     (15) param -> type-specifier . ID
-    (16) param -> type-specifier . ID LSQUAREBRACKET RSQUAREBRACKET
+    (16) param -> type-specifier . ID LBRACE RBRACE
 
     ID              shift and go to state 22
 
@@ -373,18 +375,18 @@ state 21
 state 22
 
     (15) param -> type-specifier ID .
-    (16) param -> type-specifier ID . LSQUAREBRACKET RSQUAREBRACKET
+    (16) param -> type-specifier ID . LBRACE RBRACE
 
     COMMA           reduce using rule 15 (param -> type-specifier ID .)
     RPAREN          reduce using rule 15 (param -> type-specifier ID .)
-    LSQUAREBRACKET  shift and go to state 27
+    LBRACE          shift and go to state 27
 
 
 state 23
 
     (13) param-list -> param-list COMMA . param
     (15) param -> . type-specifier ID
-    (16) param -> . type-specifier ID LSQUAREBRACKET RSQUAREBRACKET
+    (16) param -> . type-specifier ID LBRACE RBRACE
     (8) type-specifier -> . INT
     (9) type-specifier -> . VOID
 
@@ -445,9 +447,9 @@ state 26
 
 state 27
 
-    (16) param -> type-specifier ID LSQUAREBRACKET . RSQUAREBRACKET
+    (16) param -> type-specifier ID LBRACE . RBRACE
 
-    RSQUAREBRACKET  shift and go to state 31
+    RBRACE          shift and go to state 31
 
 
 state 28
@@ -506,10 +508,10 @@ state 30
 
 state 31
 
-    (16) param -> type-specifier ID LSQUAREBRACKET RSQUAREBRACKET .
+    (16) param -> type-specifier ID LBRACE RBRACE .
 
-    COMMA           reduce using rule 16 (param -> type-specifier ID LSQUAREBRACKET RSQUAREBRACKET .)
-    RPAREN          reduce using rule 16 (param -> type-specifier ID LSQUAREBRACKET RSQUAREBRACKET .)
+    COMMA           reduce using rule 16 (param -> type-specifier ID LBRACE RBRACE .)
+    RPAREN          reduce using rule 16 (param -> type-specifier ID LBRACE RBRACE .)
 
 
 state 32

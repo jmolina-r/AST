@@ -1,11 +1,16 @@
-int aNumber1;
-int aNumber2;
-int anArray{123};
-void aVariable;
-void anotherArray{234};
-
 int aProcedure4 ( int aNum1, void aNum2 ){
+        aNum3 = aNum1;
+        aNum2 = aNum3 + 01;
+       if(aNum3 +dasd /iuui >= oioi)
+       ;
+       if (aNum3 >= 26){
+         output(aNum3);
+         output();
 
-        ;;;;
+        }else{
+        output();
+        output();
+        ;
+        }
 
 }

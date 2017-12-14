@@ -130,7 +130,7 @@ def p_local_declarations01(p):
 def p_statement_list01(p):
     '''statement-list : statement-list statement
                         | empty'''
-    # p[0] = statement_list01(p[1], p[2], "statement_list01")
+
     if len(p) == 3:
         if isinstance(p[1], list):
             p[0] = p[1]
@@ -172,12 +172,12 @@ def p_statement05(p):
 
 def p_expression_stmt01(p):
     'expression-stmt : expression SEMICOLON'
-    p[0] = expression_stmt02(p[1],'Expresion')
+    p[0] = expression_stmt(p[1],'Expresion')
 
 
 def p_expression_stmt02(p):
     'expression-stmt : SEMICOLON'
-    p[0] = expression_stmt02(None, "semi")
+    p[0] = expression_stmt(None, "e")
 
 
 def p_selection_stmt01(p):

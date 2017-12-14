@@ -42,7 +42,6 @@ class program(nodo):
             txt += id + "->" + hijo1 + "\n\t"
 
         txt += id + "[label= " + self.name + "]" + "\n\t"
-        # txt += id + "->" + hijo1 + "\n\t"
 
         return "digraph G {\n\t" + txt + "}"
 
@@ -87,12 +86,10 @@ class fun_declaration(nodo):
 
         if isinstance(self.params, list):
             for param in self.params:
-                print "lista"
                 idp = param.traducir()
                 txt += id + "[label= \"" + self.name + " " + self.type_var + " " + self.ID + "\"]" + "\n\t"
                 txt += str(id) + " -> " + str(idp) + "\n\t"
         else:
-            print "no lista"
             if self.params == "void":
                 txt += id + "[label= \"" + self.name + " " + self.type_var + " " + self.ID + "\"]" + "\n\t"
             else:
@@ -118,7 +115,6 @@ class param01(nodo):
     def traducir(self):
         global txt
         id = incremetarContador()
-        print self.isarray
         if self.isarray == False:
             txt += id + "[label= \" " + self.name + " " + self.var_type + " " + self.ID + "\"]" + "\n\t"
         else:
@@ -164,53 +160,9 @@ class compound_stmt(nodo):
         return id
 
 
-class statement_list01(nodo):
-    'statement-list : statement-list statement'
 
-    def __init__(self, hijo1, hijo2, name):
-        self.name = name
-        self.hijo1 = hijo1
-        self.hijo2 = hijo2
-
-    def traducir(self):
-        global txt
-        id = incremetarContador()
-        if self.hijo2 == ";":
-            hijo1 = self.hijo1.traducir()
-            # hijo2 = self.hijo2.traducir()
-            txt += id + "[label= " + self.name + "]" + "\n\t"
-            txt += id + " -> " + hijo1 + "\n\t"
-            # txt += id + " -> " + hijo2 + "\n\t"
-        else:
-            hijo1 = self.hijo1.traducir()
-            hijo2 = self.hijo2.traducir()
-
-            txt += id + "[label= " + self.name + "]" + "\n\t"
-            txt += id + " -> " + hijo1 + "\n\t"
-            txt += id + " -> " + hijo2 + "\n\t"
-        return id
-
-
-class expression_stmt01(nodo):
-    'expression-stmt : expression SEMICOLON'
-
-    def __init__(self, hijo1, name):
-        self.name = name
-        self.hijo1 = hijo1
-
-    def traducir(self):
-        global txt
-        id = incremetarContador()
-        hijo1 = self.hijo1.traducir()
-
-        txt += id + "[label= " + self.name + "]" + "\n\t"
-        txt += id + " -> " + hijo1 + "\n\t"
-
-        return id
-
-
-class expression_stmt02(nodo):
-    'expression-stmt : SEMICOLON'
+class expression_stmt(nodo):
+    'expression-stmt : expression SEMICOLON | SEMICOLON'
 
     def __init__(self, hijo1, name):
         self.name = name
@@ -221,7 +173,7 @@ class expression_stmt02(nodo):
         id = incremetarContador()
 
         if self.hijo1 is None:
-            txt += id + "[label= e ]" + "\n\t"
+            txt += id + "[label=\""+ self.name +"\" ]" + "\n\t"
         else:
             hijo1 = self.hijo1.traducir()
             txt += id + " -> " + str(hijo1) + "\n\t"
@@ -233,36 +185,23 @@ class expression_stmt02(nodo):
 class selection_stmt01(nodo):
     'selection-stmt : IF LPAREN expression RPAREN statement'
 
-    def __init__(self, expresion, statement, name):
+    def __init__(self, expression, statement, name):
         self.name = name
-        self.expresion = expresion
+        self.expression = expression
         self.statement = statement
+
 
     def traducir(self):
         global txt
         id = incremetarContador()
 
-        txt += id + "[label= " + self.name + "]" + "\n\t"
-        if isinstance(self.statement, list):
-            for s in self.statement:
-                print 'lista statement'
-                statement = s.traducir()
-                txt += id + " -> " + str(statement) + "\n\t"
-        else:
-            statement = self.statement.traducir()
-            txt += id + " -> " + str(statement) + "\n\t"
-            print "not list2"
-        if isinstance(self.expresion, list):
-            print 'lista expresion'
-            for e in self.expresion:
+        hijo1 = self.expression.traducir()
+        hijo2 = self.statement.traducir()
 
-                print 'lista statement'
-                expresion = e.traducir()
-                txt += id + " -> " + str(expresion) + "\n\t"
-        else:
-            expresion = self.expresion.traducir()
-            txt += id + " -> " + expresion + "\n\t"
-            print "not list2"
+
+        txt += id + "[label= \"" + self.name + "\"]" + "\n\t"
+        txt += id + " -> " + hijo1 + "\n\t"
+        txt += id + " -> " + hijo2 + "\n\t"
 
         return id
 
@@ -368,16 +307,12 @@ class var01(nodo):
         # txt += id + " -> " + hijo1 + "\n\t"
         if self.expresion is not None:
             if isinstance(self.expresion, list):
-                print 'lista expresion'
                 for e in self.expresion:
-                    # print str(e)+'E'
-                    print 'lista statement'
                     expresion = e.traducir()
                     txt += id + " -> " + str(expresion) + "\n\t"
             else:
                 expresion = self.expresion.traducir()
                 txt += id + " -> " + expresion + "\n\t"
-                print "not list2"
 
         return id
 
@@ -392,7 +327,7 @@ class binOP(nodo):
         self.term2 = term2
 
     def traducir(self):
-        # print self.op
+
         global txt
         id = incremetarContador()
 

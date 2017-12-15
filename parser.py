@@ -7,6 +7,8 @@ from scanner import tokens, cadena
 import codecs
 import sys
 from AST import *
+from diccionario import *
+
 
 
 def p_program(p):
@@ -337,7 +339,7 @@ def p_args01(p):
 
 def p_args02(p):
     'args : empty'
-    p[0] = Null()
+    p[0] = None
 
 
 def p_arg_list01(p):
@@ -377,3 +379,20 @@ parser = yacc.yacc()
 result = parser.parse(cadena, debug=0)
 
 traducir(result)
+
+t = gettabla()
+lista_t=t.getnodos()
+for x in lista_t:
+    print x.gettipo()+x.getid()
+    if x.getdicc()is not None:
+        print "NUEVO DICCIONARIO CREADO"
+        dic = x.getdicc()
+        list_newdic=dic.getnodos()
+        for y in list_newdic:
+            print y.gettipo()+y.getid()
+            if y.getdicc() is not None:
+                print "NUEVO DICCIONARIO CREADO2"
+                dic2 = y.getdicc()
+                list2_dic = dic2.getnodos()
+                for a in list2_dic:
+                    print a.gettipo()

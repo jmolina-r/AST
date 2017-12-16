@@ -1,21 +1,16 @@
-int aNumber1;
-int aNumber1;
-int aNumber1;
-int aNumber1;
-int aNumber1{123};
-void aProcedure1 (void asssss, int ooo)
+int aa;
+int bb;
+int bb;
+
+void aProcedure1 (void)
 {
-    void sdj;
-    if ((aNum5 - aNum3) / (aNum5/03 + 04/aNum3))
-    {
-        output(aNum3);
-    }
-    else
-    {
-        int aNum4;
-        void aNum4;
-        int aNum4;
-    }
+    int bsbasa;
+
+    int bsassadqwedsdqa;
+    aNum3 = aNum1;
+    if (23)
+        ;
+
 
 }
 

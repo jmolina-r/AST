@@ -1,5 +1,6 @@
 from diccionario import *
 
+
 txt = " "
 cont = 0
 tabla_simbolo = diccionario()
@@ -244,7 +245,7 @@ class selection_stmt02():
         new_nodo.settdicc(new_diccinario)
         diccionar.addnodo(new_nodo, diccionar)
 
-        new_nodo = nodo("nodo_else", "else", None)
+        new_nodo = nodo("nodo_else", "ELSE", None)
         new_diccinario2 = diccionario()
         new_nodo.settdicc(new_diccinario2)
         diccionar.addnodo(new_nodo, diccionar)

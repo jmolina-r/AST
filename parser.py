@@ -6,8 +6,8 @@ import os
 from scanner import tokens, cadena
 import codecs
 import sys
-from AST import *
 from diccionario import *
+from AST import *
 
 
 
@@ -372,27 +372,56 @@ def traducir(result):
     graphFile = open('graphviztrhee.vz', 'w')
     graphFile.write(result.traducir())
     graphFile.close()
-    print "El programa traducido se guardo en \"graphviztrhee.vz\""
+    print "El AST abstracto se guardo en \"graphviztrhee.vz\"\n"
+
+def check_def_var(tabla_simbolo):
+    if len(tabla_simbolo.getnodos())!=0:
+        lista_nodos = tabla_simbolo.getnodos()
+        for nodo in lista_nodos:
+            dato = nodo.getid()
+            comparacion = 0
+            #compara el identidicador con las variables de su ambiente
+            for i in lista_nodos:
+                if dato == i.getid() and dato!="IF" and dato!="WHILE" and dato!="ELSE":
+                    comparacion=comparacion+1
+            # si se encuentra mas de una vez el id objetivo, se imprime aviso
+            if comparacion > 1:
+                print "ERROR: Variable"+nodo.gettipo()+" "+nodo.getid()+" "+"Duplicada"
+            #llamado recursivo a nodo que contenga un diccionario asociado
+            if nodo.getdicc() is not None:
+                check_def_var(nodo.getdicc())
+
+
+
+
 
 
 parser = yacc.yacc()
 result = parser.parse(cadena, debug=0)
 
+#se imprime AST Abstracto
 traducir(result)
 
-t = gettabla()
-lista_t=t.getnodos()
-for x in lista_t:
-    print x.gettipo()+x.getid()
-    if x.getdicc()is not None:
-        print "NUEVO DICCIONARIO CREADO"
-        dic = x.getdicc()
-        list_newdic=dic.getnodos()
-        for y in list_newdic:
-            print y.gettipo()+y.getid()
-            if y.getdicc() is not None:
-                print "NUEVO DICCIONARIO CREADO2"
-                dic2 = y.getdicc()
-                list2_dic = dic2.getnodos()
-                for a in list2_dic:
-                    print a.gettipo()
+#Se obtiene la tabla de simbolos
+tabla_sim = gettabla()
+print "Tabla de simbolos construida...\n"
+#lista_t=tabla_sim.getnodos()
+#for x in lista_t:
+#    print x.gettipo()+x.getid()
+#    if x.getdicc()is not None:
+#        print "NUEVO DICCIONARIO CREADO"
+#        dic = x.getdicc()
+#        list_newdic=dic.getnodos()
+#        for y in list_newdic:
+#            print y.gettipo()+y.getid()
+#            if y.getdicc() is not None:
+#                print "NUEVO DICCIONARIO CREADO2"
+#                dic2 = y.getdicc()
+#                list2_dic = dic2.getnodos()
+#                for a in list2_dic:
+#                    print a.gettipo()
+
+#se verifica Identificador de variable duplicado
+print "Verificando Identificadores de variables duplicado..."
+check_def_var(tabla_sim)
+print "Check"

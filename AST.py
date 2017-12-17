@@ -59,7 +59,8 @@ class var_declaration01():
     def traducir(self,diccionario):
         global txt
         id = incremetarContador()
-
+        if self.type_var.upper() == "VOID":
+            print "ERROR: tipo de variable "+self.ID+" no puede ser VOID"
         if self.NUM is not None:
             txt += id + "[label= \" " + self.name + " " + self.type_var + " " + self.ID + " [" + str(
                 self.NUM) + "]\" ]" + "\n\t"
@@ -100,8 +101,12 @@ class fun_declaration():
         else:
             if self.params == "void":
                 txt += id + "[label= \"" + self.name + " " + self.type_var + " " + self.ID + "\"]" + "\n\t"
+
+                new_diccionario.addparams(new_nodo)
                 new_nodo.settdicc(new_diccionario)
                 diccionari.addnodo(new_nodo, diccionari)
+
+
             else:
                 new_nodo.settdicc(new_diccionario)
                 diccionari.addnodo(new_nodo, diccionari)
@@ -134,11 +139,14 @@ class param01():
         if self.isarray == False:
             txt += id + "[label= \" " + self.name + " " + self.var_type + " " + self.ID + "\"]" + "\n\t"
             new_nodo = nodo(self.var_type, self.ID, None)
+            diccionar.addparams(new_nodo)
         else:
             txt += id + "[label= \" " + self.name + " " + self.var_type + " " + self.ID + "[" + "]\"]" + "\n\t"
             new_nodo = nodo(self.var_type+"[]", self.ID, None)
+            diccionar.addparams(new_nodo)
 
         diccionar.addnodo(new_nodo, diccionar)
+
         return id
 
 

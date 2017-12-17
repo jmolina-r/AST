@@ -1,3 +1,4 @@
+
 class nodo():
     def __init__(self, tipo_dato, id, valor):
         self.tipo_dato = tipo_dato
@@ -24,10 +25,13 @@ class nodo():
         return self.id
 
 
+
 class diccionario():
     def __init__(self):
         self.list_nodos = []
         self.nivel = 0
+
+        self.list_parametro=[]
 
     def set_nivel(self, nivel):
         self.nivel = nivel
@@ -38,6 +42,10 @@ class diccionario():
 
     def getnodos(self):
         return self.list_nodos
+    def getparams(self):
+        return self.list_parametro
+    def addparams(self,parametro):
+        self.list_parametro.append(parametro)
 
 
 def main():

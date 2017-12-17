@@ -1,16 +1,10 @@
-int aa;
-int bb;
-int bb;
-
-void aProcedure1 (void)
+int aProcedure1 (int hgjj)
 {
-    int bsbasa;
-
-    int bsassadqwedsdqa;
-    aNum3 = aNum1;
-    if (23)
         ;
+}
 
-
+int aProcedure1 (void)
+{
+        ;
 }
 

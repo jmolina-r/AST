@@ -10,7 +10,6 @@ from diccionario import *
 from AST import *
 
 
-
 def p_program(p):
     'program : declaration-list'
     p[0] = program(p[1], "program")
@@ -174,7 +173,7 @@ def p_statement05(p):
 
 def p_expression_stmt01(p):
     'expression-stmt : expression SEMICOLON'
-    p[0] = expression_stmt(p[1],'Expresion')
+    p[0] = expression_stmt(p[1], 'Expresion')
 
 
 def p_expression_stmt02(p):
@@ -201,6 +200,7 @@ def p_return_stmt01(p):
     'return-stmt : RETURN SEMICOLON'
     p[0] = return_stmt(None, "RETURN")
 
+
 def p_return_stmt02(p):
     'return-stmt : RETURN expression SEMICOLON'
     p[0] = return_stmt(p[2], "RETURN")
@@ -218,12 +218,12 @@ def p_expression02(p):
 
 def p_var01(p):
     'var : ID '
-    p[0] = var01(p[1],None, "var: ")
+    p[0] = var01(p[1], None, "var: ")
 
 
 def p_var02(p):
     'var : ID LBRACE expression RBRACE'
-    p[0] = var01(p[1],p[3],"var: ")
+    p[0] = var01(p[1], p[3], "var: ")
 
 
 def p_simple_expression01(p):
@@ -269,7 +269,7 @@ def p_relop06(p):
 def p_additive_expression01(p):
     '''additive-expression : additive-expression addop term
                             | term'''
-    #p[0] = binOP(p[1], p[2], p[3], "BinOP")
+    # p[0] = binOP(p[1], p[2], p[3], "BinOP")
     if len(p) == 4:
         p[0] = binOP(p[1], p[2], p[3], "BinOP")
 
@@ -345,7 +345,7 @@ def p_args02(p):
 def p_arg_list01(p):
     '''arg-list : arg-list COMMA expression
                 | expression'''
-    #p[0] = arg_list01(p[1], p[3], "arg_list01")
+    # p[0] = arg_list01(p[1], p[3], "arg_list01")
     if len(p) == 4:
         if isinstance(p[1], list):
             p[0] = p[1]
@@ -358,6 +358,7 @@ def p_arg_list01(p):
             p[0].extend([p[3]])
     else:
         p[0] = p[1]
+
 
 def p_empty(p):
     'empty :'
@@ -374,24 +375,67 @@ def traducir(result):
     graphFile.close()
     print "El AST abstracto se guardo en \"graphviztrhee.vz\"\n"
 
+
 def check_def_var(tabla_simbolo):
-    if len(tabla_simbolo.getnodos())!=0:
+    if len(tabla_simbolo.getnodos()) != 0:
         lista_nodos = tabla_simbolo.getnodos()
         for nodo in lista_nodos:
             dato = nodo.getid()
             comparacion = 0
-            #compara el identidicador con las variables de su ambiente
+
+            # compara el identidicador con las variables de su ambiente
             for i in lista_nodos:
-                if dato == i.getid() and dato!="IF" and dato!="WHILE" and dato!="ELSE":
-                    comparacion=comparacion+1
-            # si se encuentra mas de una vez el id objetivo, se imprime aviso
-            if comparacion > 1:
-                print "ERROR: Variable"+nodo.gettipo()+" "+nodo.getid()+" "+"Duplicada"
-            #llamado recursivo a nodo que contenga un diccionario asociado
+                if dato == i.getid() and dato != "IF" and dato != "WHILE" and dato != "ELSE":
+                    comparacion = comparacion + 1
+            # si se encuentra mas de una vez el id objetivo (variable), se imprime aviso
+            if comparacion > 1 and nodo.getdicc() is None:
+                print "ERROR: Variable" + nodo.gettipo() + " " + nodo.getid() + " " + "Duplicada"
+
+            # llamado recursivo a nodo que contenga un diccionario asociado
             if nodo.getdicc() is not None:
                 check_def_var(nodo.getdicc())
 
+def check_def_funcion(tabla_simbolo):
+    nodos = tabla_simbolo.getnodos()
+    lista_funcion =[]
 
+    # se seleccionan los nodos funciones
+    for nodo in nodos :
+        if nodo.getdicc() is not None:
+            #print "funcion encontrada.."
+            lista_funcion.append(nodo)
+
+    # se verifica tipo e identificador por cada funcion
+    for n in lista_funcion:
+        nod = n
+        contador = 0
+        #comparacion con las otras funciones
+        for i in lista_funcion:
+            temp = i
+            #print temp.gettipo()
+            #funcion con id y tipo identicos
+            if nod.getid()==temp.getid() and nod.gettipo()==temp.gettipo():
+
+                contador=contador+1
+                if contador==2:
+                    #print "iguales"
+                    lista1 = nod.getdicc().getparams()
+                    lista2 = temp.getdicc().getparams()
+
+                    #misma cantidad de parametros
+                    print len(lista1)
+                    if len(lista1) == len(lista2):
+                        match = 0
+                        #comparación de tipos:
+                        for x in range(len(lista1)):
+                            print x
+                            print lista1[x].gettipo()
+                            print lista2[x].gettipo()
+                            if lista1[x].gettipo() ==lista2[x].gettipo():
+                                match=match+1
+                        #print match
+                        if(match == len(lista1)):
+                            print "ERROR: Funcion "+i.getid()
 
 
 
@@ -399,14 +443,14 @@ def check_def_var(tabla_simbolo):
 parser = yacc.yacc()
 result = parser.parse(cadena, debug=0)
 
-#se imprime AST Abstracto
+# se imprime AST Abstracto
 traducir(result)
 
-#Se obtiene la tabla de simbolos
+# Se obtiene la tabla de simbolos
 tabla_sim = gettabla()
 print "Tabla de simbolos construida...\n"
-#lista_t=tabla_sim.getnodos()
-#for x in lista_t:
+# lista_t=tabla_sim.getnodos()
+# for x in lista_t:
 #    print x.gettipo()+x.getid()
 #    if x.getdicc()is not None:
 #        print "NUEVO DICCIONARIO CREADO"
@@ -421,7 +465,9 @@ print "Tabla de simbolos construida...\n"
 #                for a in list2_dic:
 #                    print a.gettipo()
 
-#se verifica Identificador de variable duplicado
+# se verifica Identificador de variable duplicado
 print "Verificando Identificadores de variables duplicado..."
 check_def_var(tabla_sim)
 print "Check"
+#check_def_funcion(tabla_sim)
+
